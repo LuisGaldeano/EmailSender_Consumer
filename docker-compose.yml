@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  python-script:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: python3 email_generator.py
+    hostname: consumer
+    restart: unless-stopped
