@@ -1,3 +1,4 @@
+import json
 import logging
 from confluent_kafka import Consumer
 
@@ -25,3 +26,8 @@ class MessageConsumer(Consumer):
             logging.error("error: %s", error)
             return None
         return message.value().decode('utf-8')
+
+    def get_data(self):
+        if message := self.get_message():
+            return json.loads(message)
+        return None
