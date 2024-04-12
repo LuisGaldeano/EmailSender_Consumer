@@ -1,15 +1,18 @@
 import os
 
-from consumer.consumer import MessageConsumer
+from consumer.message_consumer import MessageConsumer
 from consumer.email_generator import EmailGenerator
 
 
 class Starter:
-    def __init__(self):
+    def __init__(self, start: bool = True):
         self.consumer = MessageConsumer(
-            topic=os.getenv("TOKEN"),
+            topic=os.getenv("TOPIC"),
             group_id=os.getenv("GROUP_ID")
         )
+
+        if start:
+            self.start()
 
     def start(self):
         while True:
