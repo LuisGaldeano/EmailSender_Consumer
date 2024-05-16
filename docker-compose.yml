@@ -1,9 +1,18 @@
 version: '3.8'
 services:
-  python-script:
+  consumer:
+    container_name: ${PROJECT_NAME}_consumer
+    hostname: consumer
+    restart: unless-stopped
+    image: ${PROJECT_NAME}_consumer_image
     build:
       context: .
       dockerfile: docker/Dockerfile
-    command: python3 email_generator.py
-    hostname: consumer
-    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - emailsender_backend_kafka-net
+
+networks:
+  emailsender_backend_kafka-net:
+    external: true

@@ -1,12 +1,14 @@
 import json
 import logging
+import os
+
 from confluent_kafka import Consumer
 
 
 class MessageConsumer(Consumer):
     def __init__(self, topic: str, group_id: str):
-        self.broker_host = 'localhost'
-        self.broker_port = 9092
+        self.broker_host = os.getenv("KAFKA_BROKER_URL"),
+        self.broker_port = os.getenv("KAFKA_BROKER_PORT"),
         self.topic = topic
         super().__init__(
             {

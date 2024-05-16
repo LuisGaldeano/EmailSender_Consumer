@@ -1,7 +1,7 @@
 import os
 
-from consumer.message_consumer import MessageConsumer
-from consumer.email_generator import EmailGenerator
+from message_consumer import MessageConsumer
+from email_generator import EmailGenerator
 
 
 class Starter:
@@ -19,14 +19,14 @@ class Starter:
             data = self.consumer.get_data()
             if (
                 data
-                and (notification_template := data.get("notification_template", None))
-                and (extra_parameters := data.get("extra_parameters", None))
-                and (to_email := data.get("to_email", None))
-                and (custom_data := data.get("custom_data", None))
+                and (template := data.get("template", None))
+                and (username := data.get("username", None))
+                and (client_email := data.get("client_email", None))
+                and (address := data.get("address", None))
             ):
                 EmailGenerator(
-                    notification_template=notification_template,
-                    extra_parameters=extra_parameters,
-                    to_email=to_email,
-                    custom_data=custom_data
+                    template=template,
+                    username=username,
+                    client_email=client_email,
+                    address=address
                 ).send()
