@@ -7,7 +7,7 @@ def app():
     load_dotenv()
 
     # Starting consumer
-    Starter().start()
+    Starter()
 
 
 if __name__ == "__main__":

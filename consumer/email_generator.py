@@ -18,34 +18,36 @@ class EmailGenerator:
     address = None
 
     def __init__(
-            self,
-            template: str,
-            username: str = None,
-            client_email: str = None,
-            address: str = None
+        self,
+        template: str,
+        username: str = None,
+        client_email: str = None,
+        address: str = None
     ):
-        template_path = f"templates/{template.replace(':', '/')}"
+        self.output_path = template.replace(':', '/')
+        self.template_path = f"templates/{self.output_path}"
 
-        if os.path.isdir(template_path):
-            if not os.path.isdir(f"{template_path}/email"):
+        if os.path.isdir(self.template_path):
+            if not os.path.isdir(f"{self.template_path}/email"):
                 raise ValueError('Not valid notification type')
         else:
             raise ValueError(f"{template} is not valid template")
 
         if not client_email:
-            raise ValueError("Needed client_email parametrer")
+            raise ValueError("Needed client_email parameter")
 
-        self.template_path = f'{template_path}'
         self.username = username
         self.client_email = client_email
         self.address = address
 
     def save_mail(self, rendered_content: str, rendered_subject):
         self.mail_uuid = uuid4()
-        if not os.path.isdir(f"sent/{self.template_path}"):
-            os.mkdir(f"sent/{self.template_path}")
+        if not os.path.isdir("sent"):
+            os.mkdir("sent")
+        if not os.path.isdir(f"sent/{self.output_path}"):
+            os.mkdir(f"sent/{self.output_path}")
         with open(
-                f"sent/{self.template_path}/{self.client_email}-{rendered_subject}-{self.mail_uuid}.html", "w"
+            f"sent/{self.output_path}/{self.client_email}-{rendered_subject}-{self.mail_uuid}.html", "w"
         ) as save_file:
             save_file.write(rendered_content)
             save_file.close()
@@ -53,10 +55,8 @@ class EmailGenerator:
     def create_mail(self):
         with open(f"{self.template_path}/email/content.html", "r") as email_template:
             content = email_template.read()
-        email_template.close()
         with open(f"{self.template_path}/email/subject.txt", "r") as email_subject:
             subject = email_subject.read()
-        email_subject.close()
 
         content_template = Environment(loader=FileSystemLoader('templates/')).from_string(content)
         render_content = content_template.render(extra=self.username, custom_data=self.address)

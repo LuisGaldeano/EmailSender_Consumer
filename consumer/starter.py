@@ -19,10 +19,10 @@ class Starter:
             data = self.consumer.get_data()
             if (
                 data
-                and (template := data.get("template", None))
-                and (username := data.get("username", None))
-                and (client_email := data.get("client_email", None))
-                and (address := data.get("address", None))
+                and (template := data.get("template"))
+                and (username := data.get("username"))
+                and (client_email := data.get("client_email"))
+                and (address := data.get("address"))
             ):
                 EmailGenerator(
                     template=template,
