@@ -22,11 +22,9 @@ class Starter:
                 and (template := data.get("template"))
                 and (username := data.get("username"))
                 and (client_email := data.get("client_email"))
-                and (address := data.get("address"))
             ):
                 EmailGenerator(
                     template=template,
                     username=username,
-                    client_email=client_email,
-                    address=address
+                    client_email=client_email
                 ).send()

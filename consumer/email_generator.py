@@ -15,14 +15,12 @@ class EmailGenerator:
     username = None
     client_email = None
     mail_uuid = None
-    address = None
 
     def __init__(
         self,
         template: str,
         username: str = None,
-        client_email: str = None,
-        address: str = None
+        client_email: str = None
     ):
         self.output_path = template.replace(':', '/')
         self.template_path = f"templates/{self.output_path}"
@@ -38,7 +36,6 @@ class EmailGenerator:
 
         self.username = username
         self.client_email = client_email
-        self.address = address
 
     def save_mail(self, rendered_content: str, rendered_subject):
         self.mail_uuid = uuid4()
@@ -59,9 +56,9 @@ class EmailGenerator:
             subject = email_subject.read()
 
         content_template = Environment(loader=FileSystemLoader('templates/')).from_string(content)
-        render_content = content_template.render(extra=self.username, custom_data=self.address)
+        render_content = content_template.render(extra=self.username)
         subject_template = Environment(loader=FileSystemLoader('templates/')).from_string(subject)
-        render_subject = subject_template.render(extra=self.username, custom_data=self.address)
+        render_subject = subject_template.render(extra=self.username)
 
         message = MIMEMultipart()
         message['Subject'] = render_subject
